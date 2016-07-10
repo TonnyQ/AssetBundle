@@ -4,7 +4,7 @@ using Tonny.Common.Utility;
 using System;
 using UnityEngine.SceneManagement;
 
-namespace Tonny.Common.AssetBundle
+namespace Tonny.Common.AssetLoader
 {
     /// <summary>
     /// LoadOperation Base Class
@@ -38,7 +38,7 @@ namespace Tonny.Common.AssetBundle
             get; private set;
         }
 
-        public LoadAssetBundle assetBundle
+        public LoadedAssetBundle assetBundle
         {
             get; protected set;
         }
@@ -179,7 +179,7 @@ namespace Tonny.Common.AssetBundle
             {
                 return false;
             }
-            LoadAssetBundle bundle = LoadManager.instance.GetLoadedAssetBundle(mAssetBundleName, out mDownloadingError);
+            LoadedAssetBundle bundle = LoadManager.Instance.GetLoadedAssetBundle(mAssetBundleName, out mDownloadingError);
             if (bundle != null)
             {
                 LoadSceneMode mode = mIsAdditive ? LoadSceneMode.Additive : LoadSceneMode.Single;
@@ -272,7 +272,7 @@ namespace Tonny.Common.AssetBundle
                 return false;
             }
 
-            LoadAssetBundle bundle = LoadManager.instance.GetLoadAssetBundle(mAssetBundleName, out mDownloadingError);
+            LoadedAssetBundle bundle = LoadManager.Instance.GetLoadedAssetBundle(mAssetBundleName, out mDownloadingError);
             if (bundle != null)
             {
                 mBundleRequest = bundle.mAssetBundle.LoadAssetAsync(mAssetName, mType);
@@ -308,7 +308,7 @@ namespace Tonny.Common.AssetBundle
 
             if (mBundleRequest != null && mBundleRequest.isDone)
             {
-                LoadManager.instance.ManifestObject = GetAsset<AssetBundleManifest>();
+                LoadManager.Instance.AssetBundleManifestObj = GetAsset<AssetBundleManifest>();
                 return false;
             }
             else
