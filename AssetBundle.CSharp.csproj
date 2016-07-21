@@ -66,12 +66,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\3rd\TerrainComposer\Runtime\TerrainHeight.cs" />
+    <Compile Include="Assets\3rd\TerrainComposer\Scripts\MultiTerrainBoost.cs" />
+    <Compile Include="Assets\3rd\TerrainComposer\Scripts\Utility Scripts\CombineChildren.cs" />
+    <Compile Include="Assets\3rd\TerrainComposer\Scripts\Utility Scripts\MeshCombineUtility.cs" />
+    <Compile Include="Assets\3rd\TerrainComposer\Scripts\rtp_functions.cs" />
     <Compile Include="Assets\Scripts\Loader\LoadManager.cs" />
     <Compile Include="Assets\Scripts\Loader\LoadOperation.cs" />
     <Compile Include="Assets\Scripts\Loader\LoadUtility.cs" />
     <Compile Include="Assets\Scripts\Utility\Logger.cs" />
     <Compile Include="Assets\Scripts\Utility\MonoSingleton.cs" />
     <Compile Include="Assets\Scripts\Utility\Singleton.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\3rd\TerrainComposer\MobileShaders\4SplatNTerrain.shader" />
+    <None Include="Assets\3rd\TerrainComposer\MobileShaders\4SplatNTerrainColorNormal.shader" />
+    <None Include="Assets\3rd\TerrainComposer\MobileShaders\4SplatTerrain.shader" />
+    <None Include="Assets\3rd\TerrainComposer\MobileShaders\4SplatTerrainColorNormal.shader" />
+    <None Include="Assets\3rd\TerrainComposer\MobileShaders\6SplatNTerrain.shader" />
+    <None Include="Assets\3rd\TerrainComposer\MobileShaders\8SplatTerrain.shader" />
+    <None Include="Assets\3rd\TerrainComposer\MobileShaders\8SplatTerrainColorNormal.shader" />
+    <None Include="Assets\3rd\TerrainComposer\Runtime\ReadMe.txt" />
+    <None Include="Assets\3rd\TerrainComposer\Templates\Drawing_tc.shader" />
+    <None Include="Assets\3rd\TerrainComposer\TerrainComposer Release Notes.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
