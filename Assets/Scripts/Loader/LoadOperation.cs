@@ -43,11 +43,6 @@ namespace Tonny.Common.AssetLoader
             get; protected set;
         }
 
-        public string error
-        {
-            get; protected set;
-        }
-
         protected abstract bool downloadIsDone { get; }
         protected abstract void FinishDownload();
 
@@ -99,19 +94,19 @@ namespace Tonny.Common.AssetLoader
 
         protected override void FinishDownload()
         {
-            error = _www.error;
-            if (!string.IsNullOrEmpty(error))
+            if (!string.IsNullOrEmpty(_www.error))
             {
+                Debug.LogError(string.Format("Asset load error! Message:{0}",_www.error));
                 return;
             }
-            UnityEngine.AssetBundle bundle = _www.assetBundle;
+            AssetBundle bundle = _www.assetBundle;
             if (bundle == null)
             {
-                error = string.Format("{0} is not a valid asset bundle.", assetBundleName);
+                Debug.LogError(string.Format("{0} is not a valid asset bundle.", assetBundleName));
             }
             else
             {
-                //assetBundle = new LoadAssetBundle(_www.assetBundle);
+                assetBundle = new LoadedAssetBundle(_www.assetBundle);
             }
             _www.Dispose();
             _www = null;
@@ -123,13 +118,14 @@ namespace Tonny.Common.AssetLoader
         }
     }
 
-#region Load Level
+    #region Load Level
     public class LoadLevelSimulationOperation : LoadOperation
     {
         private AsyncOperation mOperation;
 
         public LoadLevelSimulationOperation(string assetBundleName,string levelName,bool isAdditive)
         {
+            //string[] levelPaths = UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(assetBundleName, levelName);
             string levelPath = "";
             if (string.IsNullOrEmpty(levelPath))
             {
@@ -179,7 +175,7 @@ namespace Tonny.Common.AssetLoader
             {
                 return false;
             }
-            LoadedAssetBundle bundle = LoadManager.Instance.GetLoadedAssetBundle(mAssetBundleName, out mDownloadingError);
+            LoadedAssetBundle bundle = LoadManager.Instance.GetLoadedAssetBundle(mAssetBundleName);
             if (bundle != null)
             {
                 LoadSceneMode mode = mIsAdditive ? LoadSceneMode.Additive : LoadSceneMode.Single;
@@ -242,15 +238,12 @@ namespace Tonny.Common.AssetLoader
     {
         private string mAssetBundleName;
         private string mAssetName;
-        private string mDownloadingError;
-        private System.Type mType;
         protected AssetBundleRequest mBundleRequest = null;
 
-        public LoadAssetFullOperation(string bundleName, string assetName, System.Type type)
+        public LoadAssetFullOperation(string bundleName, string assetName)
         {
             mAssetBundleName = bundleName;
             mAssetName = assetName;
-            mType = type;
         }
 
         public override T GetAsset<T>()
@@ -272,10 +265,10 @@ namespace Tonny.Common.AssetLoader
                 return false;
             }
 
-            LoadedAssetBundle bundle = LoadManager.Instance.GetLoadedAssetBundle(mAssetBundleName, out mDownloadingError);
+            LoadedAssetBundle bundle = LoadManager.Instance.GetLoadedAssetBundle(mAssetBundleName);
             if (bundle != null)
             {
-                mBundleRequest = bundle.mAssetBundle.LoadAssetAsync(mAssetName, mType);
+                mBundleRequest = bundle.mAssetBundle.LoadAssetAsync(mAssetName);
                 return false;
             }
             else
@@ -286,33 +279,11 @@ namespace Tonny.Common.AssetLoader
 
         public override bool IsDone()
         {
-            if (mBundleRequest == null && mDownloadingError != null)
+            if (mBundleRequest == null)
             {
-                Debug.LogError(mDownloadingError);
-                return true;
-            }
-            return mBundleRequest != null && mBundleRequest.isDone;
-        }
-    }
-
-    public class LoadMainfestOperation : LoadAssetFullOperation
-    {
-        public LoadMainfestOperation(string bundleName, string assetName, System.Type type)
-            : base(bundleName, assetName, type)
-        {
-        }
-
-        public override bool Update()
-        {
-            base.Update();
-
-            if (mBundleRequest != null && mBundleRequest.isDone)
-            {
-                LoadManager.Instance.AssetBundleManifestObj = GetAsset<AssetBundleManifest>();
                 return false;
             }
-            else
-                return true;
+            return mBundleRequest != null && mBundleRequest.isDone;
         }
     }
     #endregion

@@ -8,7 +8,19 @@ namespace Tonny.Common.AssetLoader
 {
     public static class LoadUtility
     {
+        #region Simulate
+        public const string UiPanelOutputPath = "prefab/ui/panel";
+        public const string UiAtlasOutputPath = "prefab/ui/atlas";
+        public const string AudioOutputPath = "prefab/audio";
+        public const string CharacterOutputPath = "prefab/character/player";
+        public const string NpcOutputPath = "prefab/character/npc";
+        public const string MonsterOutputPath = "prefab/character/monster";
+        public const string FxOutputPath = "prefab/fx";
+        #endregion
+
+        #region AssetBundle
         public const string AssetBundleOutputPath = "AssetBundles";
+        #endregion
 
         public static string GetPlatformName()
         {
